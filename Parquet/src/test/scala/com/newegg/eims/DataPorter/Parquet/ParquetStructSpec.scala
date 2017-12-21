@@ -63,6 +63,14 @@ class ParquetStructSpec extends FlatSpec with Matchers {
   )
 
   "ParquetStructSpec" should "check read" in {
+    generateData(0).as[TestD]().saveParquet(currentDir + "2testsparkstruct3.parquet")
+    generateData(0).as[TestD]().saveParquet(currentDir + "3testsparkstruct3.parquet")
+    generateData(0).as[TestD]().saveParquet(currentDir + "12testsparkstruct3.parquet")
+    generateData(0).as[TestD]().saveParquet(currentDir + "13testsparkstruct3.parquet")
+    generateData(0).as[TestD]().saveParquet(currentDir + "122testsparkstruct3.parquet")
+    generateData(0).as[TestD]().saveParquet(currentDir + "123testsparkstruct3.parquet")
+    generateData(0).as[TestD]().saveParquet(currentDir + "22testsparkstruct3.parquet")
+    generateData(0).as[TestD]().saveParquet(currentDir + "23testsparkstruct3.parquet")
     val path = currentDir + "testsparkstruct3.parquet"
     val f = generateData(1026).as[TestD]().saveParquet(path)
     val fs = f.getFileSystem(new Configuration())
@@ -77,8 +85,8 @@ class ParquetStructSpec extends FlatSpec with Matchers {
     data.show()
     checkData(data.collect())
     sc.stop()
-
-    checkData(new ParquetFolderDataSet(new Path(currentDir), new JobConf(), "testsparkstruct3.parquet", true).as[TestD]())
+    val da = new ParquetFolderDataSet(new Path(currentDir), new JobConf(), "testsparkstruct3.parquet", true).as[TestD]().toArray
+    checkData(da)
   }
 
     private def checkData(data: Iterable[TestD]) = {

@@ -65,8 +65,6 @@ cdhVersion 最新为 0.35-1.6.0-cdh5.8.3
 
 所有扩展函数都在package对应的 Converts 类中，这样方便大家使用
 
-package 仓库 (wait) 
-
 ## 简要设计说明
 
 ### 核心抽象
@@ -126,8 +124,6 @@ StructSet 只做两件事： 把class转换为行列结构 以及 把行列结�
 |CMap	    |scala.collection.Map	|
 |CStruct	| IDataRow |
 
-API 文档使用scala 风格： (wait)
-
 ## Code Example
 
 ``` scala
@@ -186,9 +182,9 @@ object test {
 
 ## 开发
 
-开发语言采用 **scala**  （版本 2.11.11）
+开发语言采用 **scala**  （版本 2.10.6）
 
-开发管理工具采用 **sbt** （版本 0.13.15）
+开发管理工具采用 **sbt** （版本 0.13.8）
 
 ### coverage
 
@@ -207,7 +203,3 @@ sbt publish
 ``` bash
 sbt unidoc
 ```
-
-## code source
-
-[https://github.com/CodeBabyBear/DataPorter](https://github.com/CodeBabyBear/DataPorter)

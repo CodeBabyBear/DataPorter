@@ -7,8 +7,8 @@ import com.newegg.eims.DataPorter.Base.{ColumnType, IDataColumn}
   * Date: 2017/1/19
   * Creator: vq83
   */
-case class DescribeDataColumn(name: String, elementType: ColumnType, nullable: ColumnNullable) extends IDataColumn {
-  override def getIndex: Int = 0
+case class DescribeDataColumn(index: Int, name: String, elementType: ColumnType, nullable: ColumnNullable) extends IDataColumn {
+  override def getIndex: Int = index
 
   override def getName: String = name
 

@@ -392,7 +392,7 @@ class ParquetSchemaConverter(conf: Configuration) {
           .addField(Types
             .buildGroup(REPEATED)
             // "array" is the name chosen by parquet-hive (1.7.0 and prior version)
-            .addField(convertField(DescribeDataColumn("array", elementType, ColumnNullable.Nullable)))
+            .addField(convertField(DescribeDataColumn(0,"array", elementType, ColumnNullable.Nullable)))
             .named("bag"))
           .named(field.getName)
 
@@ -408,8 +408,8 @@ class ParquetSchemaConverter(conf: Configuration) {
         ConversionPatterns.mapType(
           repetition,
           field.getName,
-          convertField(DescribeDataColumn("key", keyType, ColumnNullable.NoNull)),
-          convertField(DescribeDataColumn("value", valueType, ColumnNullable.Nullable)))
+          convertField(DescribeDataColumn(0,"key", keyType, ColumnNullable.NoNull)),
+          convertField(DescribeDataColumn(0,"value", valueType, ColumnNullable.Nullable)))
 
       // =====================================
       // ArrayType and MapType (standard mode)
@@ -425,7 +425,7 @@ class ParquetSchemaConverter(conf: Configuration) {
           .buildGroup(repetition).as(LIST)
           .addField(
             Types.repeatedGroup()
-              .addField(convertField(DescribeDataColumn("element", elementType, ColumnNullable.Nullable)))
+              .addField(convertField(DescribeDataColumn(0,"element", elementType, ColumnNullable.Nullable)))
               .named("list"))
           .named(field.getName)
 
@@ -441,8 +441,8 @@ class ParquetSchemaConverter(conf: Configuration) {
           .addField(
             Types
               .repeatedGroup()
-              .addField(convertField(DescribeDataColumn("key", keyType, ColumnNullable.NoNull)))
-              .addField(convertField(DescribeDataColumn("value", valueType, ColumnNullable.Nullable)))
+              .addField(convertField(DescribeDataColumn(0,"key", keyType, ColumnNullable.NoNull)))
+              .addField(convertField(DescribeDataColumn(0,"value", valueType, ColumnNullable.Nullable)))
               .named("key_value"))
           .named(field.getName)
 
@@ -452,7 +452,7 @@ class ParquetSchemaConverter(conf: Configuration) {
 
       case t: CStructInfo =>
         t.elements.foldLeft(Types.buildGroup(repetition)) { (builder, field) =>
-          builder.addField(convertField(DescribeDataColumn(field.name, field.element, ColumnNullable.NoNull)))
+          builder.addField(convertField(DescribeDataColumn(0,field.name, field.element, ColumnNullable.NoNull)))
         }.named(field.getName)
       case _ =>
         throw new Exception(s"Unsupported data type $field.dataType")

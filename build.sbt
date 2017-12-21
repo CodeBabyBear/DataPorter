@@ -7,7 +7,7 @@ scalaVersion := "2.11.11"
 import sbt.Keys._
 import sbt._
 
-lazy val baseversion = "0.38"
+lazy val baseversion = "0.41"
 lazy val cdhVersion = "cdh5.8.3"
 lazy val sparkVersion = "2.1.1"
 
@@ -19,9 +19,6 @@ lazy val defaultSettings =
     organization := "com.newegg.eims",
     publishMavenStyle := true,
     autoAPIMappings := true,
-    externalResolvers := Resolver.withDefaultResolvers(resolvers.value, mavenCentral = false),
-    resolvers ++= Seq(
-    ),
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % "3.0.1" % "test",
       "org.scalamock" %% "scalamock-scalatest-support" % "3.3.0" % "test"
@@ -50,6 +47,20 @@ lazy val hdfs = Project(id = "HDFS", base = file("HDFS"), settings = defaultSett
   version := baseversion + "-" + ("2.6.0-" + cdhVersion),
   libraryDependencies ++= Seq("org.apache.hadoop" % "hadoop-client" % ("2.6.0-" + cdhVersion))
 ))
+
+//lazy val spark = Project(id = "Spark", base = file("Spark"), settings = defaultSettings ++ Seq(
+//  name := "DataPorter.Spark",
+//  version := baseversion + "-" + sparkVersion,
+//  libraryDependencies ++= Seq(
+//    "org.apache.spark" %% "spark-hive" % sparkVersion excludeAll ExclusionRule("org.mortbay.jetty", "jetty")
+//  )
+//)) dependsOn database settings (
+//  projectDependencies := {
+//    Seq(
+//      (projectID in database).value.exclude("org.apache.orc", "hive-storage-api")
+//    )
+//  }
+//  )
 
 lazy val hive = Project(id = "Hive", base = file("Hive"), settings = defaultSettings ++ Seq(
   name := "DataPorter.Hive",

@@ -91,7 +91,7 @@ class ParquetRowConverter(rowType: GroupType, schema: DataSetSchema, updater: Pa
   private val currentRow = new ParquetDataRow(schema)
 
   private val fieldConverters: Array[Converter with HasParentContainerUpdater] = {
-    rowType.getFields.asScala.zip(schema.getColumns).zipWithIndex.map {
+    rowType.getFields.asScala.map(i => i -> schema.getCol(i.getName)).zipWithIndex.map {
       case ((parquetFieldType, catalystField), ordinal) =>
         // Converted field value should be set to the `ordinal`-th cell of `currentRow`
         newConverter(parquetFieldType, catalystField.getType, new RowUpdater(currentRow, ordinal))
@@ -192,7 +192,7 @@ class ParquetRowConverter(rowType: GroupType, schema: DataSetSchema, updater: Pa
       case t: CStructInfo =>
         val sc = new DataSetSchema(t.elements.indices.map(i => {
           val et = t.elements(i)
-          i -> DescribeDataColumn(et.name, et.element, ColumnNullable.Nullable)
+          i -> DescribeDataColumn(i, et.name, et.element, ColumnNullable.Nullable)
         }).toMap)
         new ParquetRowConverter(parquetType.asGroupType(), sc, new ParentContainerUpdater {
           override def set(value: Any): Unit = updater.set(value.asInstanceOf[ParquetDataRow].copy())
